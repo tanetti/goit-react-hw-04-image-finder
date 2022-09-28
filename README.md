@@ -1,1 +1,1 @@
-# GoIT React HW 03 (Image Finder)
+# GoIT React HW 04 (Image Finder)
