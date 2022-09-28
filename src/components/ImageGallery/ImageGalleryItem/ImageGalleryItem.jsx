@@ -20,9 +20,15 @@ export const ImageGalleryItem = ({
   };
 
   const scrollToFirstNewImage = () => {
-    const firstNewElementTop = firstNewRef.current.offsetTop - 81;
+    const margin = 15;
+    const underHeaderOffset = document
+      .querySelector('header')
+      .getBoundingClientRect().height;
+    const offset = underHeaderOffset + margin;
 
-    window.scroll({ top: firstNewElementTop, behavior: 'smooth' });
+    const firstNewElementTopOffset = firstNewRef.current.offsetTop - offset;
+
+    window.scroll({ top: firstNewElementTopOffset, behavior: 'smooth' });
   };
 
   return (
