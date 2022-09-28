@@ -1,10 +1,17 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { GalleryImage, GalleryItem } from './ImageGalleryItem.styled';
 import { Modal } from '../Modal/Modal';
 
-export const ImageGalleryItem = ({ smallImage, largeImage, tags }) => {
+export const ImageGalleryItem = ({
+  id,
+  smallImage,
+  largeImage,
+  tags,
+  firstNewID,
+}) => {
   const [shouldModalShown, setShouldModalShown] = useState(false);
+  const firstNewRef = useRef(null);
 
   const toggleModal = () => {
     if (onkeydown) onkeydown = null;
@@ -12,9 +19,17 @@ export const ImageGalleryItem = ({ smallImage, largeImage, tags }) => {
     setShouldModalShown(prevShouldModalShown => !prevShouldModalShown);
   };
 
+  const scrollToFirstNewImage = () => firstNewRef.current.scrollIntoView();
+
   return (
     <GalleryItem>
-      <GalleryImage src={smallImage} alt={tags} onClick={toggleModal} />
+      <GalleryImage
+        src={smallImage}
+        alt={tags}
+        onClick={toggleModal}
+        ref={id === firstNewID ? firstNewRef : null}
+        onLoad={id === firstNewID ? scrollToFirstNewImage : null}
+      />
       {shouldModalShown ? (
         <Modal
           modalImageToShow={largeImage}
@@ -27,7 +42,9 @@ export const ImageGalleryItem = ({ smallImage, largeImage, tags }) => {
 };
 
 ImageGalleryItem.propTypes = {
+  id: PropTypes.number.isRequired,
   smallImage: PropTypes.string.isRequired,
   largeImage: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,
+  firstNewID: PropTypes.number.isRequired,
 };
