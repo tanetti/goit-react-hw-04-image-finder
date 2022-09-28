@@ -17,11 +17,7 @@ export const fetchImages = async (queryValue, currentPage) => {
     per_page: PER_PAGE,
   };
 
-  const fetchData = await axios
-    .get(API_BASE_URL, { params: urlParams })
-    .catch(() => 'error');
-
-  if (fetchData === 'error') return fetchData;
+  const fetchData = await axios.get(API_BASE_URL, { params: urlParams });
 
   return fetchData.data;
 };

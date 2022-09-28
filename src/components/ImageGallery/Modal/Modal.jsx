@@ -1,43 +1,29 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalWindow, Overlay } from './Modal.styled';
 
-export class Modal extends Component {
-  componentDidMount() {
-    onkeydown = this.onKeyDown;
-  }
-
-  componentWillUnmount() {
-    onkeydown = null;
-  }
-
-  onKeyDown = evt => {
+export const Modal = ({ modalImageToShow, modalImageAlt, onClose }) => {
+  onkeydown = evt => {
     if (evt.code !== 'Escape') return;
 
-    this.props.onClose();
+    onClose();
   };
 
-  onOverlayClick = ({ target, currentTarget }) => {
+  const onOverlayClick = ({ target, currentTarget }) => {
     if (target !== currentTarget) return;
 
-    this.props.onClose();
+    onClose();
   };
 
-  render() {
-    return createPortal(
-      <Overlay onClick={this.onOverlayClick}>
-        <ModalWindow>
-          <img
-            src={this.props.modalImageToShow}
-            alt={this.props.modalImageAlt}
-          />
-        </ModalWindow>
-      </Overlay>,
-      document.querySelector('#portal')
-    );
-  }
-}
+  return createPortal(
+    <Overlay onClick={onOverlayClick}>
+      <ModalWindow>
+        <img src={modalImageToShow} alt={modalImageAlt} />
+      </ModalWindow>
+    </Overlay>,
+    document.querySelector('#portal')
+  );
+};
 
 Modal.propTypes = {
   modalImageToShow: PropTypes.string.isRequired,

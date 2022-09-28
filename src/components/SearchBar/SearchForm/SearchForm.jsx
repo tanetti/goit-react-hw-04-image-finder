@@ -1,33 +1,29 @@
 import PropTypes from 'prop-types';
-import { Component } from 'react';
+import { useState } from 'react';
 import { StyledSearchForm } from './SearchForm.styled';
 import { SearchButton } from '../SearchButton/SearchButton';
 import { SearchInput } from '../SearchInput/SearchInput';
 
-export class SearchForm extends Component {
-  state = {
-    searchQuery: '',
+export const SearchForm = ({ onSubmit }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const onInputChange = inputSearchQuery => {
+    setSearchQuery(inputSearchQuery);
   };
 
-  onInputChange = inputSearchQuery => {
-    this.setState({ searchQuery: inputSearchQuery });
-  };
-
-  onFormSubmit = evt => {
+  const onFormSubmit = evt => {
     evt.preventDefault();
 
-    this.props.onSubmit(this.state.searchQuery);
+    onSubmit(searchQuery);
   };
 
-  render() {
-    return (
-      <StyledSearchForm onSubmit={this.onFormSubmit} autoComplete="off">
-        <SearchButton />
-        <SearchInput onChange={this.onInputChange} />
-      </StyledSearchForm>
-    );
-  }
-}
+  return (
+    <StyledSearchForm onSubmit={onFormSubmit} autoComplete="off">
+      <SearchButton />
+      <SearchInput onChange={onInputChange} />
+    </StyledSearchForm>
+  );
+};
 
 SearchForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,

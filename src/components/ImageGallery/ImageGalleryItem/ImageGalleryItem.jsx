@@ -1,38 +1,30 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { GalleryImage, GalleryItem } from './ImageGalleryItem.styled';
 import { Modal } from '../Modal/Modal';
-import { Component } from 'react';
 
-export class ImageGalleryItem extends Component {
-  state = {
-    shouldModalShown: false,
+export const ImageGalleryItem = ({ smallImage, largeImage, tags }) => {
+  const [shouldModalShown, setShouldModalShown] = useState(false);
+
+  const toggleModal = () => {
+    if (onkeydown) onkeydown = null;
+
+    setShouldModalShown(prevShouldModalShown => !prevShouldModalShown);
   };
 
-  toggleModal = () => {
-    this.setState(prevState => ({
-      shouldModalShown: !prevState.shouldModalShown,
-    }));
-  };
-
-  render() {
-    return (
-      <GalleryItem>
-        <GalleryImage
-          src={this.props.smallImage}
-          alt={this.props.tags}
-          onClick={this.toggleModal}
+  return (
+    <GalleryItem>
+      <GalleryImage src={smallImage} alt={tags} onClick={toggleModal} />
+      {shouldModalShown ? (
+        <Modal
+          modalImageToShow={largeImage}
+          modalImageAlt={tags}
+          onClose={toggleModal}
         />
-        {this.state.shouldModalShown ? (
-          <Modal
-            modalImageToShow={this.props.largeImage}
-            modalImageAlt={this.props.tags}
-            onClose={this.toggleModal}
-          />
-        ) : null}
-      </GalleryItem>
-    );
-  }
-}
+      ) : null}
+    </GalleryItem>
+  );
+};
 
 ImageGalleryItem.propTypes = {
   smallImage: PropTypes.string.isRequired,
