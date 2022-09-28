@@ -19,7 +19,11 @@ export const ImageGalleryItem = ({
     setShouldModalShown(prevShouldModalShown => !prevShouldModalShown);
   };
 
-  const scrollToFirstNewImage = () => firstNewRef.current.scrollIntoView();
+  const scrollToFirstNewImage = () => {
+    const firstNewElementTop = firstNewRef.current.offsetTop - 81;
+
+    window.scroll({ top: firstNewElementTop, behavior: 'smooth' });
+  };
 
   return (
     <GalleryItem>
